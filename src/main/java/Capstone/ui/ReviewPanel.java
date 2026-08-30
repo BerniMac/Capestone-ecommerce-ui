@@ -85,13 +85,11 @@ public class ReviewPanel extends JPanel {
         JPanel buttons = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
         JButton submitButton = new JButton("Submit Review");
-        JButton clearButton = new JButton("Clear");
+
 
         submitButton.addActionListener(e -> submitReview());
-        clearButton.addActionListener(e -> clearForm());
 
         buttons.add(submitButton);
-        buttons.add(clearButton);
 
         gbc.gridx=1;
         gbc.gridy=3;
@@ -430,7 +428,6 @@ public class ReviewPanel extends JPanel {
                             ReviewPanel.this,
                             "Review submitted successfully.");
 
-                    clearForm();
 
                     loadReviews();
 
@@ -449,12 +446,5 @@ public class ReviewPanel extends JPanel {
         worker.execute();
     }
 
-    private void clearForm(){
-
-        productComboBox.setSelectedIndex(0);
-        ratingComboBox.setSelectedIndex(0);
-        commentArea.setText("");
-
-    }
 
 }

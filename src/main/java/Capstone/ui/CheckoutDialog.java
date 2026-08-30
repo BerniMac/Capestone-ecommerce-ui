@@ -1,5 +1,6 @@
 package Capstone.ui;
 
+import Capstone.model.Card;
 import Capstone.model.Customer;
 import Capstone.model.Order;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,6 +24,7 @@ public class CheckoutDialog extends JDialog {
     private JTextField countryField;
 
     private JTextField cardHolderField;
+    private JTextField cardTypeField;
     private JTextField cardNumberField;
     private JTextField expiryField;
     private JPasswordField cvvField;
@@ -116,17 +118,101 @@ public class CheckoutDialog extends JDialog {
         GridBagConstraints gbc = createConstraints();
 
         cardHolderField = new JTextField(18);
+        cardTypeField = new JTextField(18);
         cardNumberField = new JTextField(18);
         expiryField = new JTextField(18);
         cvvField = new JPasswordField(18);
 
-        addField(panel, gbc,0,"Cardholder",cardHolderField);
-        addField(panel, gbc,1,"Card Number",cardNumberField);
-        addField(panel, gbc,2,"Expiry",expiryField);
-        addField(panel, gbc,3,"CVV",cvvField);
+        addField(panel, gbc, 0, "Cardholder", cardHolderField);
+        addField(panel, gbc, 1, "Card type", cardTypeField);
+        addField(panel, gbc, 2, "Card Number", cardNumberField);
+        addField(panel, gbc, 3, "Expiry", expiryField);
+        addField(panel, gbc, 4, "CVV", cvvField);
+
+        JButton payButton = new JButton("Pay");
+
+        gbc.gridx = 1;
+        gbc.gridy = 5;
+
+        panel.add(payButton, gbc);
+
+        payButton.addActionListener(e -> saveCard());
 
         return panel;
 
+    }
+    private void saveCard() {
+
+        String cardHolderName = cardHolderField.getText();
+        String cardNumber = cardNumberField.getText();
+        String cardExpiry = expiryField.getText();
+        String cardCVV = new String(cvvField.getPassword());
+
+        Card card = new Card();
+
+        card.setCardHolderName(cardHolderName);
+        card.setCardType("VISA");
+        card.setCardNumber(cardNumber);
+        card.setCardExpiry(cardExpiry);
+        card.setCardCVV(cardCVV);
+        SwingWorker<String, Void> worker = new SwingWorker<>() {
+
+            @Override
+            protected String doInBackground() throws Exception {
+
+                ObjectMapper mapper = new ObjectMapper();
+
+                String json = mapper.writeValueAsString(card);
+
+                HttpClient client = HttpClient.newHttpClient();
+
+                HttpRequest request = HttpRequest.newBuilder()
+                        .uri(URI.create(
+                                "http://localhost:8080/api/cards"))
+                        .header(
+                                "Content-Type",
+                                "application/json")
+                        .POST(
+                                HttpRequest.BodyPublishers
+                                        .ofString(json))
+                        .build();
+
+                HttpResponse<String> response =
+                        client.send(
+                                request,
+                                HttpResponse.BodyHandlers.ofString());
+
+                if (response.statusCode() != 200) {
+                    throw new RuntimeException(
+                            "Failed to save card. Status: "
+                                    + response.statusCode());
+                }
+
+                return response.body();
+            }
+
+            @Override
+            protected void done() {
+
+                try {
+
+                    String response = get();
+
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Card saved successfully!");
+
+                } catch (Exception e) {
+
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Error saving card: "
+                                    + e.getMessage());
+                }
+            }
+        };
+
+        worker.execute();
     }
 
     private JPanel createSummaryPanel(){

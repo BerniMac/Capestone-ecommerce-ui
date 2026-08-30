@@ -11,7 +11,7 @@ public class MainFrame extends JFrame {
 
     public MainFrame() {
 
-        super("E-Commerce Management System");
+        super("legendary sprays");
 
         this.customerId = "cf3ebaa5-896a-48ea-ad05-ea60843e4a2c";
 
@@ -22,10 +22,10 @@ public class MainFrame extends JFrame {
 
         tabbedPane = new JTabbedPane();
 
-        tabbedPane.addTab("🛒 Product Catalog", new CatalogPanel());
-        tabbedPane.addTab("👤 Customer Dashboard", new CustomerDashboardPanel());
-        tabbedPane.addTab("📦 Orders", new OrderShipmentPanel(customerId));
-        tabbedPane.addTab("⭐ Reviews", new ReviewPanel());
+        tabbedPane.addTab(" Product Catalog", new CatalogPanel());
+        tabbedPane.addTab(" Customer Dashboard", new CustomerDashboardPanel());
+        tabbedPane.addTab(" Orders", new OrderShipmentPanel(customerId));
+        tabbedPane.addTab(" Reviews", new ReviewPanel());
 
         add(createToolbar(), BorderLayout.NORTH);
         add(tabbedPane, BorderLayout.CENTER);
@@ -36,7 +36,6 @@ public class MainFrame extends JFrame {
         JToolBar toolBar = new JToolBar();
         toolBar.setFloatable(false);
 
-        JButton refreshButton = new JButton("Refresh");
 
         toolBar.addSeparator();
 

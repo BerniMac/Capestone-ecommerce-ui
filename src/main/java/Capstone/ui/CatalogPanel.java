@@ -25,7 +25,7 @@ public class CatalogPanel extends JPanel {
     private JTable productTable;
     private DefaultTableModel productTableModel;
     private List<ProductRow> productRows = new ArrayList<>();
-    private JTextField searchField;
+
 
     public CatalogPanel() {
 
