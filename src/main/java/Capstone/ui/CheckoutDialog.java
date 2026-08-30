@@ -56,7 +56,7 @@ public class CheckoutDialog extends JDialog {
         add(createCenterPanel(), BorderLayout.CENTER);
         add(createButtons(), BorderLayout.SOUTH);
 
-        //loadOrderSummary();
+
     }
 
     private JLabel createTitle(){

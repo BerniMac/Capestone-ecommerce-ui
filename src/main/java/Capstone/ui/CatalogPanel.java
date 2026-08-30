@@ -29,25 +29,19 @@ public class CatalogPanel extends JPanel {
 
     public CatalogPanel() {
 
-        setLayout(new BorderLayout(10,10));
-        setBorder(new EmptyBorder(15,15,15,15));
+        setLayout(new BorderLayout(10, 10));
+        setBorder(new EmptyBorder(15, 15, 15, 15));
 
 
-        add(createCenterPanel(), BorderLayout.CENTER);
+        add(createProductTable(), BorderLayout.CENTER);
 
         loadProductData();
 
     }
 
-    private JSplitPane createCenterPanel() {
+    private JScrollPane createCenterPanel() {
 
-        JSplitPane splitPane = new JSplitPane();
-
-        splitPane.setResizeWeight(0.65);
-
-        splitPane.setLeftComponent(createProductTable());
-
-        return splitPane;
+        return createProductTable();
 
     }
 
